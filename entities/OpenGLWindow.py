@@ -1,6 +1,7 @@
 import math
 import os
 import pickle
+from enum import Enum
 from entities.carsimulator.Race import Race
 from entities.carsimulator.Car import Car
 
@@ -16,12 +17,41 @@ try:
 except:
     print ('OpenGL wrapper for python not found')
 
+class WeightTreatment():
+    ADD_WEIGHTS = 0
+    MULT_LOWER_WEIGHT = 1
+
+    @staticmethod
+    def add_weights(weights):
+        total_weight = 0
+        for weight in weights:
+            total_weight += weight
+
+        return total_weight
+
+    @staticmethod
+    def mult_lower_weight(weights):
+        total_weight = 0
+        lower_weight = 99999999
+        for weight in weights:
+            if weight < lower_weight:
+                lower_weight = weight
+
+            total_weight += weight
+
+        return total_weight * lower_weight
+
+
 
 class Scene:
 
     def __init__(self, circuit, cotxes, has_to_save_car, network_cars, simulacions, ponderacio, de_facil_a_dificil):
         self._circuits = [1, 2]
         self._index_circuits = 0
+
+        self.weight_treatments = [WeightTreatment.ADD_WEIGHTS, WeightTreatment.MULT_LOWER_WEIGHT]
+        self.weight_treatments_index = 0
+
         self._total_laps = 2
 
         self._num_iterations_by_frame = 100
@@ -35,7 +65,7 @@ class Scene:
         self._race = Race(self._circuits[self._index_circuits], cotxes, has_to_save_car, network_cars, self.__ponderacio, self._total_laps)
 
         self.car_nets = self._race.get_nets() # Car's nets of our first circuit
-        self._cars_best_distance = [0 for i in range(cotxes)]
+        self._cars_best_distance = [[] for i in range(cotxes)]
         self._cars_circuits_completed = [0 for i in range(cotxes)]
 
         self._aspect_ratio = 1
@@ -87,7 +117,6 @@ class Scene:
         glEnable(GL_DEPTH_TEST)
 
         self._race.render()
-
 
         # Visualitzar el circuit sense cotxes
         ######################################################################################################################
@@ -325,16 +354,18 @@ class Scene:
                     c.collision_time = self._race.total_time
 
             if self._race.all_cars_not_collide_have_finished_laps() or self._race.alives == 0:
+                num_cars_that_completed_circuit = 0
                 for index, car in enumerate(self._race.cars):
                     # Save best distance
-                    self._cars_best_distance[index] += car.get_weight()
+                    self._cars_best_distance[index].append(car.get_weight())
 
                     if(car.laps == self._total_laps):
-                        print("YEAHHH")
+                        num_cars_that_completed_circuit += 1
                         self._cars_circuits_completed[index] += 1
 
                     if not car.collision:
                         car.collision_time = self._race.total_time
+                print(num_cars_that_completed_circuit)
                 print(self._cars_circuits_completed)
                 print("BEST DISTANCES: ", self._cars_best_distance)
                 """
@@ -359,9 +390,14 @@ class Scene:
                         exit(0)
 
                     self._index_circuits = 0
-                    self.car_nets = self.particleFilter(self._cars_best_distance, self.car_nets)
+
+                    weights_operated = self.apply_weight_treatment(self._cars_best_distance)
+
+                    print("WEIGHTS OPPERATED: ", weights_operated)
+
+                    self.car_nets = self.particleFilter(weights_operated, self.car_nets)
                     self._last_time = 0
-                    self._cars_best_distance = [0 for i in range(cotxes)]
+                    self._cars_best_distance = [[] for i in range(cotxes)]
                     self._cars_circuits_completed = [0 for i in range(cotxes)]
 
                 self._race = Race(self._circuits[self._index_circuits], cotxes, has_to_save_car, network_cars, self.__ponderacio, self._total_laps)
@@ -430,6 +466,22 @@ class Scene:
 
         return nets
 
+    def apply_weight_treatment(self, weights_all_cars):
+        weights_result = []
+
+        weight_treatments = {
+            WeightTreatment.ADD_WEIGHTS: WeightTreatment.add_weights,
+            WeightTreatment.MULT_LOWER_WEIGHT: "bye"
+        }
+
+        weight_treatment_method = weight_treatments.get(self.weight_treatments_index)
+        print(WeightTreatment.ADD_WEIGHTS)
+        print(weight_treatment_method)
+        for weights_car in weights_all_cars:
+            weights_result.append(weight_treatment_method(weights_car))
+
+        return weights_result
+
     def visible(self, vis):
         if vis == GLUT_VISIBLE:
             glutIdleFunc(self.idle)
@@ -444,7 +496,7 @@ def main(circuit, cotxes, has_to_save_car, network_cars, simulacions, ponderacio
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH)
 
     glutInitWindowSize(1000, 900)
-    glutInitWindowPosition(50, 50)
+    glutInitWindowPosition(0, 0)
 
     glutCreateWindow(b'Car Machine Learning')
 
@@ -497,9 +549,9 @@ usuari=finestra.usuari()
 """
 circuit = 1
 ponderacio = 2
-cotxes = 30
+cotxes = 100
 de_facil_a_dificil = 0
-simulacions = 100
+simulacions = 5
 
 network_cars = []
 """
