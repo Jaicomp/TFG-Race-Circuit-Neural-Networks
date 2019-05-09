@@ -17,75 +17,43 @@ try:
 except:
     print ('OpenGL wrapper for python not found')
 
-class WeightTreatment():
-    ADD_WEIGHTS = 0
-    MULT_LOWER_WEIGHT = 1
-
-    @staticmethod
-    def add_weights(weights):
-        total_weight = 0
-        for weight in weights:
-            total_weight += weight
-
-        return total_weight
-
-    @staticmethod
-    def mult_lower_weight(weights):
-        total_weight = 0
-        lower_weight = 99999999
-        for weight in weights:
-            if weight < lower_weight:
-                lower_weight = weight
-
-            total_weight += weight
-
-        return total_weight * lower_weight
-
-
-
 class Scene:
 
-    def __init__(self, circuit, cotxes, has_to_save_car, network_cars, simulacions, ponderacio, de_facil_a_dificil):
-        self._circuits = [1, 2]
+    def __init__(self, num_cars, has_to_save_car, num_max_simulations, ponderation):
+        self._circuits = [1]
         self._index_circuits = 0
 
-        self.weight_treatments = [WeightTreatment.ADD_WEIGHTS, WeightTreatment.MULT_LOWER_WEIGHT]
-        self.weight_treatments_index = 0
+        self._test_circuits = [13, 14, 15]
+        self._index_test_circuits = 0
 
+        self._num_cars = num_cars
+        self._ponderation = ponderation
         self._total_laps = 2
 
-        self._num_iterations_by_frame = 100
-        self._counter_iterations = 0
+        self._race = Race(self._circuits[self._index_circuits], num_cars, has_to_save_car, self._ponderation, self._total_laps)
+        self._car_nets = self._race.get_nets()  # Car's nets of our first circuit
 
-        self.__circuit = circuit
+        self._cars_circuits_completed = [0 for i in range(self._num_cars)]
+        self._cars_distance_accumulated = [0 for i in range(self._num_cars)]
+        self._cars_distance_minimum = [999999999 for i in range(self._num_cars)]
 
-        self.__de_facil_a_dificil = de_facil_a_dificil
-        self.__ponderacio = ponderacio
-
-        self._race = Race(self._circuits[self._index_circuits], cotxes, has_to_save_car, network_cars, self.__ponderacio, self._total_laps)
-
-        self.car_nets = self._race.get_nets() # Car's nets of our first circuit
-        self._cars_best_distance = [[] for i in range(cotxes)]
-        self._cars_circuits_completed = [0 for i in range(cotxes)]
+        self._number_simulations = 1
+        self._num_max_simulations = num_max_simulations
 
         self._aspect_ratio = 1
-        self._number_simulations = 1
-        self._best_time = None
-        self._simulacions = simulacions
-        self._net_input = None
-        self.__cotxes = cotxes
         self._last_time = 0
 
     def number_simulations(self):
         return int(self._number_simulations)
 
     def ponderacio(self):
-        return self.__ponderacio
+        return self._ponderation
 
-    def reset_race(self):
-        if self._simulacions != 1:
-            self._race.reset()
-        self._number_simulations = self._number_simulations + 1
+    def reset_scene(self):
+        self._last_time = 0
+        self._cars_circuits_completed = [0 for i in range(self._num_cars)]
+        self._cars_distance_accumulated = [0 for i in range(self._num_cars)]
+        self._cars_distance_minimum = [999999999 for i in range(self._num_cars)]
 
     def init(self):
         glClearColor(0.0, 0.0, 0.0, 0.0)
@@ -94,55 +62,7 @@ class Scene:
         glViewport(0, 0, width, height)
         self._aspect_ratio = width/height
 
-    def display(self):
-        """
-        if self._counter_iterations > 0:
-            return
-        print("IM IN")
-        """
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-
-        glMatrixMode(GL_PROJECTION)
-        glLoadIdentity()
-        gluPerspective(45, self._aspect_ratio, 1, 1501)
-
-        glMatrixMode(GL_MODELVIEW)
-        glLoadIdentity()
-
-        first_car = self._race.get_first_car()
-
-        gluLookAt(first_car.position.x, first_car.position.y, 120,
-                  first_car.position.x, first_car.position.y, 0,
-                  0, 1, 0)
-        glEnable(GL_DEPTH_TEST)
-
-        self._race.render()
-
-        # Visualitzar el circuit sense cotxes
-        ######################################################################################################################
-
-        # glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        # glClearColor(1,1,1,1)
-        # px = 45
-        # py = 50
-        # glLoadIdentity()
-        # gluLookAt(px, py, 270,
-        #           px, py, 0,
-        #           0, 1, 0)
-        # self._race.track.render2()
-        # glutSwapBuffers()
-        # return
-        #####################################################################################################################
-
-        glMatrixMode(GL_PROJECTION)
-        glLoadIdentity()
-        glOrtho(-1*self._aspect_ratio, 1*self._aspect_ratio, -1, 1, -1, 1)
-
-        glMatrixMode(GL_MODELVIEW)
-        glLoadIdentity()
-
-        glDisable(GL_DEPTH_TEST)
-
+    def draw_car_HUD(self, first_car):
         glColor3f(1, 1, 1)
         width_bar = 0.01
         x = -len(first_car.collision_distances) / 2 * width_bar - 0.2
@@ -186,115 +106,133 @@ class Scene:
             x = x + width_bar
 
         glRasterPos2f(-0.15 * self._aspect_ratio, -0.95)
-        text = "Sensores"
+        text = "Collision sensors"
         for ch in text:
             glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
 
         glRasterPos2f(0.045 * self._aspect_ratio, -0.95)
-        text = "S. central".format(self.__circuit)
+        text = "Central sensors".format(self._circuits[self._index_circuits])
         for ch in text:
             glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
 
-        if self.__circuit in range(1, 13):
+        if self._circuits[self._index_circuits] in range(1, 13):
 
             glRasterPos2f(-0.95 * self._aspect_ratio, -0.5)
-            text = "Circuit: {0}".format(self.__circuit)
+            text = "Circuit: {0}".format(self._circuits[self._index_circuits])
             for ch in text:
                 glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
         else:
             glRasterPos2f(-0.95 * self._aspect_ratio, -0.5)
-            text = "Circuit Test: {0}".format(self.__circuit - 12)
+            text = "Circuit Test: {0}".format( self._circuits[self._index_circuits] - 12)
             for ch in text:
                 glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
 
-        if self.__ponderacio == 1:
+        if self._ponderation == 1:
             glRasterPos2f(-0.95 * self._aspect_ratio, -0.55)
-            text = "Ponderació: d"
+            text = "Ponderation: d"
             for ch in text:
                 glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
-        if self.__ponderacio == 2:
+        if self._ponderation == 2:
             glRasterPos2f(-0.95 * self._aspect_ratio, -0.55)
-            text = "Ponderació: d^2"
+            text = "Ponderation: d^2"
             for ch in text:
                 glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
-        if self.__ponderacio == 3:
+        if self._ponderation == 3:
             glRasterPos2f(-0.95 * self._aspect_ratio, -0.55)
-            text = "Ponderació: v"
+            text = "Ponderation: v"
             for ch in text:
                 glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
 
-        if self.__ponderacio == 4:
+        if self._ponderation == 4:
             glRasterPos2f(-0.95 * self._aspect_ratio, -0.55)
-            text = "Ponderació: d*v"
+            text = "Ponderation: d*v"
             for ch in text:
                 glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
-        if self.__ponderacio == 5:
+        if self._ponderation == 5:
             glRasterPos2f(-0.95 * self._aspect_ratio, -0.55)
-            text = "Ponderació: d con AG"
+            text = "Ponderation: d con AG"
             for ch in text:
                 glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
 
-        if self.__de_facil_a_dificil == 0:
-            glRasterPos2f(-0.95 * self._aspect_ratio, -0.6)
-            text = "De fàcil a difícil: Si"
-            for ch in text:
-                glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
-
-        if self.__de_facil_a_dificil == 1:
-            glRasterPos2f(-0.95 * self._aspect_ratio, -0.6)
-            text = "De fàcil a difícil: No"
-            for ch in text:
-                glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
-
-        glRasterPos2f(-0.95 * self._aspect_ratio, -0.9)
-        text = "Distància: {0:.2f}".format(first_car.get_total_distance())
+        glRasterPos2f(-0.95 * self._aspect_ratio, -0.6)
+        text = "Distance: {0:.2f}".format(first_car.get_total_distance())
         for ch in text:
             glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
 
         glRasterPos2f(-0.95 * self._aspect_ratio, -0.85)
-        if self._best_time is not None:
-            text = "Temps i MillorTemps: {0:.2f},{1:.2f}".format(self._race.total_time, self._best_time)
-        else:
-            text = "Temps: {0:.2f}".format(self._race.total_time)
+        text = "Time: {0:.2f}".format(self._race.total_time)
         for ch in text:
             glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
 
         glRasterPos2f(-0.95 * self._aspect_ratio, -0.80)
-        text = "Voltes: {0}".format(first_car.laps + 1)
+        text = "Laps: {0}/{1}".format(first_car.laps + 1, self._total_laps)
         for ch in text:
             glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
 
         glRasterPos2f(-0.95 * self._aspect_ratio, -0.75)
-        text = "Vius: {0}".format(self._race.alives)
+        text = "Alives: {0}".format(self._race.alives)
         for ch in text:
             glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
 
         glRasterPos2f(-0.95 * self._aspect_ratio, -0.70)
-        text = "Simulacions: {0}/{1}".format(self._number_simulations, self._simulacions)
+        text = "Simulations: {0}/{1}".format(self._number_simulations, self._num_max_simulations)
         for ch in text:
             glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
 
         glRasterPos2f(-0.95 * self._aspect_ratio, -0.65)
-        text = "Valors {0:.2f}, {1:.2f}".format(first_car.current_speed, first_car.steer)
+        text = "Speed: {0:.2f}, Direction: {1:.2f}".format(first_car.current_speed, first_car.steer)
         for ch in text:
             glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int(ord(ch)))
-            # glRasterPos2f(-0.95*self._aspect_ratio, -0.65)
-            # text = "Velocitat i direcció: {0:.2f}".format(first_car.current_speed)
-            # for ch in text:
-            #   glutBitmapCharacter(GLUT_BITMAP_8_BY_13, ctypes.c_int( ord(ch)))
+
+    def display(self):
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+        gluPerspective(45, self._aspect_ratio, 1, 1501)
+
+        glMatrixMode(GL_MODELVIEW)
+        glLoadIdentity()
+
+        first_car = self._race.get_first_car()
+
+        gluLookAt(first_car.position.x, first_car.position.y, 120,
+                  first_car.position.x, first_car.position.y, 0,
+                  0, 1, 0)
+        glEnable(GL_DEPTH_TEST)
+
+        self._race.render()
+
+        # Visualitzar el circuit sense cotxes
+        ######################################################################################################################
+
+        # glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        # glClearColor(1,1,1,1)
+        # px = 45
+        # py = 50
+        # glLoadIdentity()
+        # gluLookAt(px, py, 270,
+        #           px, py, 0,
+        #           0, 1, 0)
+        # self._race.track.render2()
+        # glutSwapBuffers()
+        # return
+        #####################################################################################################################
+
+        glMatrixMode(GL_PROJECTION)
+        glLoadIdentity()
+        glOrtho(-1*self._aspect_ratio, 1*self._aspect_ratio, -1, 1, -1, 1)
+
+        glMatrixMode(GL_MODELVIEW)
+        glLoadIdentity()
+
+        glDisable(GL_DEPTH_TEST)
+
+        self.draw_car_HUD(first_car)
 
         glutSwapBuffers()
 
-    def special(self, key, x, y):
-        if key == GLUT_KEY_END:
-            #sys.exit()
-            self.reset_race()
-
-    def specialUp(self, key, x, y):
-        pass
-
     def idle(self):
-        time = glutGet(GLUT_ELAPSED_TIME)
         """
         if self._number_simulations == 1 + self._simulacions:
             xarxes=[]
@@ -304,15 +242,10 @@ class Scene:
 
             exit(0)
         """
+        time = glutGet(GLUT_ELAPSED_TIME)
+
         if self._last_time == 0 or time >= self._last_time + 30:
-            """
-            self._counter_iterations += 1
 
-            if self._counter_iterations >= self._num_iterations_by_frame:
-                self._counter_iterations = 0
-            """
-
-            #elapsed_time = (time-last_time)/1000
             elapsed_time = 80/1000
 
             for car in self._race.cars:
@@ -335,8 +268,6 @@ class Scene:
                         for i in v:
                             net_input.append([i])
 
-                    self._net_input = net_input
-
                     net_input = np.asarray(net_input)
 
                     r = car._net.feedforward(net_input)
@@ -356,8 +287,12 @@ class Scene:
             if self._race.all_cars_not_collide_have_finished_laps() or self._race.alives == 0:
                 num_cars_that_completed_circuit = 0
                 for index, car in enumerate(self._race.cars):
+                    car_weight = car.get_weight()
                     # Save best distance
-                    self._cars_best_distance[index].append(car.get_weight())
+                    self._cars_distance_accumulated[index] += car_weight
+
+                    if self._cars_distance_minimum[index] > car_weight:
+                        self._cars_distance_minimum[index] = car_weight
 
                     if(car.laps == self._total_laps):
                         num_cars_that_completed_circuit += 1
@@ -367,7 +302,7 @@ class Scene:
                         car.collision_time = self._race.total_time
                 print(num_cars_that_completed_circuit)
                 print(self._cars_circuits_completed)
-                print("BEST DISTANCES: ", self._cars_best_distance)
+                print("BEST DISTANCES: ", self._cars_distance_accumulated)
                 """
                 if (self._race.get_first_car().laps == 2) and (self._best_time is None or self._race.total_time < self._best_time):
                     self._best_time = self._race.total_time
@@ -379,31 +314,30 @@ class Scene:
 
                 else:  # If we have done last race
 
-                    if any(car_circuits_completed == len(self._circuits) for car_circuits_completed in self._cars_circuits_completed):
+                    self._number_simulations += 1
+                    if any(car_circuits_completed == len(self._circuits) for car_circuits_completed in self._cars_circuits_completed)\
+                            or self._number_simulations == 1 + self._num_max_simulations:
                         print("A CAR HAS COMPLETED ALL CIRCUITS")
                         print("SIMULATIONS: ", self._number_simulations)
                         exit(0)
 
-                    self._number_simulations += 1
-                    if self._number_simulations == 1 + self._simulacions:
-                        print("ACABAO")
-                        exit(0)
-
                     self._index_circuits = 0
 
-                    weights_operated = self.apply_weight_treatment(self._cars_best_distance)
+                    car_weights_treated = [weight * self._cars_distance_minimum[index]
+                                           for index, weight in enumerate(self._cars_distance_accumulated)]
 
-                    print("WEIGHTS OPPERATED: ", weights_operated)
+                    print(self._cars_distance_accumulated)
+                    print(self._cars_distance_minimum)
+                    print(car_weights_treated)
+                    print('---------------------------------')
+                    self._car_nets = self.particleFilter(car_weights_treated, self._car_nets)
+                    self.reset_scene()
 
-                    self.car_nets = self.particleFilter(weights_operated, self.car_nets)
-                    self._last_time = 0
-                    self._cars_best_distance = [[] for i in range(cotxes)]
-                    self._cars_circuits_completed = [0 for i in range(cotxes)]
-
-                self._race = Race(self._circuits[self._index_circuits], cotxes, has_to_save_car, network_cars, self.__ponderacio, self._total_laps)
-                self._race.update_nets(self.car_nets)
+                self._race = Race(self._circuits[self._index_circuits], self._num_cars, has_to_save_car, self._ponderation, self._total_laps)
+                self._race.update_nets(self._car_nets)
 
             self._last_time = time
+
             glutPostRedisplay()
 
     def particleFilter(self, weights, previous_nets):
@@ -466,22 +400,6 @@ class Scene:
 
         return nets
 
-    def apply_weight_treatment(self, weights_all_cars):
-        weights_result = []
-
-        weight_treatments = {
-            WeightTreatment.ADD_WEIGHTS: WeightTreatment.add_weights,
-            WeightTreatment.MULT_LOWER_WEIGHT: "bye"
-        }
-
-        weight_treatment_method = weight_treatments.get(self.weight_treatments_index)
-        print(WeightTreatment.ADD_WEIGHTS)
-        print(weight_treatment_method)
-        for weights_car in weights_all_cars:
-            weights_result.append(weight_treatment_method(weights_car))
-
-        return weights_result
-
     def visible(self, vis):
         if vis == GLUT_VISIBLE:
             glutIdleFunc(self.idle)
@@ -489,7 +407,7 @@ class Scene:
             glutIdleFunc(None)
 
 
-def main(circuit, cotxes, has_to_save_car, network_cars, simulacions, ponderacio, de_facil_a_dificil):
+def main(num_cars, has_to_save_car, num_max_simulations, ponderation):
 
     glutInit(sys.argv)
 
@@ -500,15 +418,13 @@ def main(circuit, cotxes, has_to_save_car, network_cars, simulacions, ponderacio
 
     glutCreateWindow(b'Car Machine Learning')
 
-    scene = Scene(circuit, cotxes, has_to_save_car, network_cars, simulacions, ponderacio, de_facil_a_dificil)
+    scene = Scene(num_cars, has_to_save_car, num_max_simulations, ponderation)
 
     scene.init()
 
     glutDisplayFunc(scene.display)
     glutReshapeFunc(scene.reshape)
     glutVisibilityFunc(scene.visible)
-    glutSpecialFunc(scene.special)
-    glutSpecialUpFunc(scene.specialUp)
 
     glutMainLoop()
 
@@ -547,13 +463,7 @@ simulacions=1
 usuari=finestra.usuari()
 
 """
-circuit = 1
-ponderacio = 2
-cotxes = 100
-de_facil_a_dificil = 0
-simulacions = 5
 
-network_cars = []
 """
 if usuari == 1:  # Human doesn't play
     if cotxes != 1:
@@ -567,5 +477,7 @@ else:
 """
 if __name__ == '__main__':
         has_to_save_car = 0  # si és 1 se guarda en UsuariCircuit el cotxe inicial
-
-        main(circuit, cotxes, has_to_save_car, network_cars, simulacions, ponderacio, de_facil_a_dificil)
+        ponderation = 2 # d^2
+        num_cars = 100
+        num_max_simulations = 1
+        main(num_cars, has_to_save_car, num_max_simulations, ponderation)

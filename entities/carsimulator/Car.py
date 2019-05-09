@@ -19,7 +19,7 @@ class Car(object):
     def get_num_angles() -> int:
         return 11
 
-    def __init__(self, track, width: float, length: float, center: Point2D,circuit,network_car,ponderacio):
+    def __init__(self, track, width: float, length: float, center: Point2D, ponderacio):
         self.__ponderacio = ponderacio
         self.__track = track
         self.__bounds = Rectangle(width, length)

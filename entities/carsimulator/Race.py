@@ -6,9 +6,8 @@ from OpenGL.GL import *
 import numpy
 
 class Race(object):
-    def __init__(self, circuit, cotxes, has_to_save_car, network_cars, ponderacio, total_laps):
+    def __init__(self, circuit, cotxes, has_to_save_car, ponderacio, total_laps):
         self.__ponderacio = ponderacio
-        self._network_cars = network_cars
         self._track = Track(circuit)
         self._cars = []
         self.__circuit = circuit
@@ -23,87 +22,13 @@ class Race(object):
         for x in range(0, self.__number_cars):
 
             # car = Car(self._track, 2, 1, Point2D(-1, 0), is_player, circuit, network_cars[x], self.__ponderacio)
-            car = Car(self._track, 2, 1, Point2D(-1, 0), circuit, "nothing", self.__ponderacio)
+            car = Car(self._track, 2, 1, Point2D(-1, 0), self.__ponderacio)
             start_position, angle, start_segment = self._track.get_start_position()
             car.bounds.position = start_position
             car.bounds.rotation_in_radians = angle
             car.current_segment = start_segment
             car.distance = 0
             car.number = x
-
-            self._cars.append(car)
-
-    def reset(self):
-        self.__total_time = 0
-        # obtenemos los pesos de los coches
-
-        weights = [max(c.get_weight(), 0) for c in self._cars]
-
-        #############chapuza genetico
-        maxim=0
-        k=0
-        for c in self._cars:
-             if maxim < c.get_weight():
-                 maxim = c.get_weight()
-                 k = c.number
-        ###############
-
-        total_weight = 0
-        sum_weights = []
-        for w in weights:
-            total_weight = total_weight + w
-            sum_weights.append(total_weight)
-
-        previous_cars = self._cars
-
-        self.__alives = self.__number_cars
-        self._cars = []
-        # inicializacion de coches
-
-        # jo
-        car = Car(self._track, 2, 1, Point2D(-1, 0), 0,self.__circuit,self._network_cars[0],self.__ponderacio)
-        start_position, angle, start_segment = self._track.get_start_position()
-        car.bounds.position = start_position
-        car.bounds.rotation_in_radians = angle
-        car.current_segment = start_segment
-        car.distance = 0
-        car.number = 0
-        self._cars.append(car)
-
-        for x in range(1, self.__number_cars):
-            # car = Car(self._track, 2, 1, Point2D(-1, 0),1,self.__circuit,self._network_cars[x],self.__ponderacio)
-            car = Car(self._track, 2, 1, Point2D(-1, 0), 1, self.__circuit, "nothing", self.__ponderacio)
-            start_position, angle, start_segment = self._track.get_start_position()
-            car.bounds.position = start_position
-            car.bounds.rotation_in_radians = angle
-            car.current_segment = start_segment
-            car.distance = 0
-            # NI IDEA PA QUE ES ESTO, pero estaba en el supervisado y no aquí => car.current_speed = 5
-            # NI IDEA PA QUE ES ESTO, pero estaba en el supervisado y no aquí => car.steer = 0
-            car.number = x
-
-            w = numpy.random.uniform(0, total_weight)
-            index = 0
-            i = 0
-            while i < len(sum_weights):
-                if sum_weights[i] >= w:
-                    index = i
-                    break;
-                i = i + 1
-
-            if index >= len(previous_cars):
-                index = 0
-
-            #############chapuza genetico
-            if self.__ponderacio==5:
-                index=k-1
-
-            #######################3
-
-
-            if x > 5:
-                car.net = previous_cars[index].net.copy()
-                car.net.apply_noise()
 
             self._cars.append(car)
 
