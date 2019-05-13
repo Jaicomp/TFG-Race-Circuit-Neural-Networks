@@ -8,7 +8,6 @@ class CarregarCircuit:
         self.__widths = []
 
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        print(dir_path)
         if circuit==1:
             with open('../Circuits/circuit3.csv') as cs:
                 entrada = csv.reader(cs)
