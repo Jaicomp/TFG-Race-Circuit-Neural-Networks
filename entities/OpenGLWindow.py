@@ -22,7 +22,7 @@ except:
 class Scene:
 
     def __init__(self, num_cars, has_to_save_car, num_max_simulations, ponderation):
-        self._test_case = 1
+        self._test_case = 100
         self._max_num_tests_cases = 255
 
         self._circuits = self.get_circuits_from_test_case(self._test_case)
@@ -33,7 +33,7 @@ class Scene:
         self._best_car = None  # We'll use it for test the test circuits
         self._index_best_car = None
 
-        self._score_test_cases = ScoreTestCases(8, len(self._test_circuits))
+        self._score_test_cases = ScoreTestCases(8, len(self._test_circuits), self._test_case, 255)
 
         self.are_training_circuits_completed = False  # If it's true then we have to test our best car in test circuits
 
@@ -66,13 +66,8 @@ class Scene:
         self._number_simulations = 1
         self.are_training_circuits_completed = False
 
+        print('simulation 1/{0}'.format(self._num_max_simulations))
         self.reset_race_info()
-        print('------------------------------')
-        print(self._test_case)
-        print(self.get_circuits_from_test_case(self._test_case))
-        print(self._circuits)
-        print(self._index_circuits)
-        print('------------------------------')
         self._race = Race(self._circuits[self._index_circuits], num_cars, has_to_save_car, self._ponderation, self._total_laps)
         self._car_nets = self._race.get_nets()
 
@@ -87,6 +82,12 @@ class Scene:
         self._cars_distance = [[] for i in range(self._num_cars)]
         self._cars_distance_accumulated = [0 for i in range(self._num_cars)]
         self._cars_distance_minimum = [999999999 for i in range(self._num_cars)]
+
+    def save_best_car_net(self):
+        filepath = '../TestCasesNets/testcase{0}.csv'.format(self._test_case)
+        f = open(filepath, 'wb')
+        pickle.dump(self._best_car.net, f)
+        f.close()
 
     def init(self):
         glClearColor(0.0, 0.0, 0.0, 0.0)
@@ -347,11 +348,7 @@ class Scene:
 
             if not car.collision:
                 car.collision_time = self._race.total_time
-        print(num_cars_that_completed_circuit)
-        print(self._cars_circuits_completed)
 
-        print("BEST DISTANCES: ", self._cars_distance)
-        print("BEST DISTANCES: ", self._cars_distance_accumulated)
         """
         if (self._race.get_first_car().laps == 2) and (self._best_time is None or self._race.total_time < self._best_time):
             self._best_time = self._race.total_time
@@ -368,12 +365,11 @@ class Scene:
             self._cars_weight_treated = [weight * self._cars_distance_minimum[index]
                                          for index, weight in enumerate(self._cars_distance_accumulated)]
 
-            print('WEIGHT TREATED: ', self._cars_weight_treated)
-
             if any(car_circuits_completed == len(self._circuits) for car_circuits_completed in self._cars_circuits_completed)\
                     or self._number_simulations == 1 + self._num_max_simulations:
                 self.are_training_circuits_completed = True
-
+                print("TRAINING CIRCUITS COMPLETED")
+                print("TEST CIRCUIT 0")
 
                 self.update_best_car()
                 self._score_test_cases.add_test_case(self._circuits, self._cars_distance[self._index_best_car])
@@ -381,9 +377,9 @@ class Scene:
                                   self._total_laps)
                 self._race.update_nets([self._best_car.net])
                 self._last_time = 0
-                print("DONE")
                 return
 
+            print("simulation {0}/{1}".format(self._number_simulations, self._num_max_simulations))
             self.reset_race_info()
             self._car_nets = self.particleFilter(self._cars_weight_treated, self._car_nets)
 
@@ -402,7 +398,7 @@ class Scene:
         """
         time = glutGet(GLUT_ELAPSED_TIME)
 
-        if self._last_time == 0 or time >= self._last_time + 30:
+        if True or self._last_time == 0 or time >= self._last_time + 30:
 
             elapsed_time = 80/1000
 
@@ -416,12 +412,24 @@ class Scene:
 
                     self._score_test_cases.update_weight_test_circuit(self._test_case, self._index_test_circuits, self._race.cars[0].get_weight())
                     self._index_test_circuits += 1
+                    print('TEST CIRCUIT: ', self._index_test_circuits)
 
                     are_all_test_circuits_completed = self._index_test_circuits == len(self._test_circuits)
                     if are_all_test_circuits_completed:
+
+                        self.save_best_car_net()
+
                         self._score_test_cases.print_score()
+                        self._score_test_cases.saveScoreInFile()
+
                         self._test_case += 1
+                        if self._test_case > self._max_num_tests_cases:
+                            print("We're finished!! Thank u :)")
+                            exit(0)
+                        print('--------------------------------------------------')
+                        print("TEST CASE: {0}/{1}".format(self._test_case, self._max_num_tests_cases))
                         self._circuits = self.get_circuits_from_test_case(self._test_case)
+                        print("CIRCUITS: ", self._circuits)
                         self.reset_scene()
                         return
 
@@ -497,11 +505,13 @@ class Scene:
         return nets
 
     def visible(self, vis):
+        glutIdleFunc(self.idle)
+        """
         if vis == GLUT_VISIBLE:
             glutIdleFunc(self.idle)
         else:
             glutIdleFunc(None)
-
+        """
 
 def main(num_cars, has_to_save_car, num_max_simulations, ponderation):
 
@@ -574,6 +584,6 @@ else:
 if __name__ == '__main__':
         has_to_save_car = 0  # si és 1 se guarda en UsuariCircuit el cotxe inicial
         ponderation = 2 # d^2
-        num_cars = 2
+        num_cars = 10
         num_max_simulations = 2
         main(num_cars, has_to_save_car, num_max_simulations, ponderation)
