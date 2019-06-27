@@ -6,7 +6,7 @@ from OpenGL.GL import *
 import numpy
 
 class Race(object):
-    def __init__(self, circuit, cotxes, has_to_save_car, ponderacio, total_laps):
+    def __init__(self, circuit, cotxes, has_to_save_car, ponderacio, total_laps, network_best_car=None):
         self.__ponderacio = ponderacio
         self._track = Track(circuit)
         self._cars = []
@@ -22,7 +22,7 @@ class Race(object):
         for x in range(0, self.__number_cars):
 
             # car = Car(self._track, 2, 1, Point2D(-1, 0), is_player, circuit, network_cars[x], self.__ponderacio)
-            car = Car(self._track, 2, 1, Point2D(-1, 0), self.__ponderacio)
+            car = Car(self._track, 2, 1, Point2D(-1, 0), self.__ponderacio, network_best_car)
             start_position, angle, start_segment = self._track.get_start_position()
             car.bounds.position = start_position
             car.bounds.rotation_in_radians = angle

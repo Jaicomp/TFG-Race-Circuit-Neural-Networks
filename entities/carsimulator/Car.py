@@ -19,7 +19,7 @@ class Car(object):
     def get_num_angles() -> int:
         return 11
 
-    def __init__(self, track, width: float, length: float, center: Point2D, ponderacio):
+    def __init__(self, track, width: float, length: float, center: Point2D, ponderacio, network_best_car):
         self.__ponderacio = ponderacio
         self.__track = track
         self.__bounds = Rectangle(width, length)
@@ -30,7 +30,6 @@ class Car(object):
         self.__collision_time = 0
         self.steer = 0
         self._collision = False
-        angles = [45, 65, 75, 85, 90, 95, 105, 115, 135]
         angle_ini = 10
         num_angles = self.get_num_angles()
         # se generan los angulos para hallar las colisiones, angulo de orientacion de los sensores
@@ -43,17 +42,13 @@ class Car(object):
         self.__current_segment = 0
         self.__distance = 0
         self.__total_segment_distance = 0
-        self._net = Network([21, 25, 2])
-        #  26/03/2019, no queremos que use la red guardada => self._net = network_car
+        self._net = Network([21, 25, 2]) if network_best_car is None else network_best_car
         self.__laps = 0
         self.__current_speed = 3
         self.number = 0
 
         self._car_time = 0
 
-        #self.__guardarAngles=[]
-        #self.__recorregut=[]
-        #self.__angle=[]
         self.__teclat=0
         self.__guardarTeclat=[]
 
@@ -331,12 +326,7 @@ class Car(object):
                         if self.__ponderacio==5:
                              return self.__total_segment_distance + self.__distance
 
-    #@property
 
-    #def recorregut(self) -> List[Point2D]:
-    #    return self.__recorregut
-    #def guardarAngles(self) -> List[float]:
-    #   return self.__guardarAngles
     def teclat(self, tecla : float):
           self.__teclat=tecla
           return self.__teclat

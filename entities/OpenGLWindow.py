@@ -1,14 +1,7 @@
 import math
-import os
 import pickle
-from enum import Enum
 from entities.carsimulator.Race import Race
-from entities.carsimulator.Car import Car
 
-from entities.Inici import Inici
-from entities.neuralnetwork.Network import Network
-from entities.guardar30xarxes import guardar30xarxes
-from entities.load30xarxes import load30xarxes
 from entities.ScoreTestCases import ScoreTestCases
 import numpy as np
 try:
@@ -22,7 +15,7 @@ except:
 class Scene:
 
     def __init__(self, num_cars, has_to_save_car, num_max_simulations, ponderation):
-        self._test_case = 100
+        self._test_case = 200
         self._max_num_tests_cases = 255
 
         self._circuits = self.get_circuits_from_test_case(self._test_case)
@@ -442,7 +435,7 @@ class Scene:
 
             self._last_time = time
 
-            glutPostRedisplay()
+            # glutPostRedisplay()
 
     def particleFilter(self, weights, previous_nets):
         nets = []
