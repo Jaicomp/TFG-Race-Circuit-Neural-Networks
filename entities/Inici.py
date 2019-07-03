@@ -14,12 +14,12 @@ class Inici:
         self._isCircuit6Enable = IntVar()
         self._isCircuit7Enable = IntVar()
 
-        self._windows.title("Visualization test case")
-        self._windows.geometry("550x300")
+        self._windows.title("Simulador de casos de prueba.")
+        self._windows.geometry("530x70")
         self._windows.resizable(False, False)
 
         Label(self._windows,
-              text="Selecciona el conjunto de circuitos de entrenamiento que quieres utilizar para el caso de prueba:",
+              text="Selecciona el conjunto de circuitos de entrenamiento que quieres utilizar:",
               ).place(x=0, y=0)
 
         Checkbutton(self._windows,
@@ -30,35 +30,35 @@ class Inici:
         Checkbutton(self._windows,
                     text="Circuito 2",
                     variable=self._isCircuit2Enable
-                    ).place(x=0, y=50)
+                    ).place(x=150, y=20)
 
         Checkbutton(self._windows,
                     text="Circuito 3",
                     variable=self._isCircuit3Enable
-                    ).place(x=0, y=80)
+                    ).place(x=300, y=20)
 
         Checkbutton(self._windows,
                     text="Circuito 4",
                     variable=self._isCircuit4Enable
-                    ).place(x=0, y=110)
+                    ).place(x=450, y=20)
 
         Checkbutton(self._windows,
                     text="Circuito 5",
                     variable=self._isCircuit5Enable
-                    ).place(x=0, y=140)
+                    ).place(x=0, y=40)
 
         Checkbutton(self._windows,
                     text="Circuito 6",
                     variable=self._isCircuit6Enable
-                    ).place(x=0, y=170)
+                    ).place(x=150, y=40)
 
         Checkbutton(self._windows,
                     text="Circuito 7",
                     variable=self._isCircuit7Enable
-                    ).place(x=0, y=200)
+                    ).place(x=300, y=40)
 
 
-        Button(self._windows,text="Empezar!", command=self.start).place(x=10,y=230)
+        Button(self._windows,text="Empezar!", command=self.start).place(x=454,y=40)
 
         mainloop()
 

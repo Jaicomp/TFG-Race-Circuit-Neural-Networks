@@ -1,0 +1,6 @@
+Circuit: 1
+ Test case: 25
+ Num simulations 3
+ Result test circuit 1: 19.985852708925012
+ Result test circuit 2: 67645.55482709702
+ Result test circuit 3: 8654.873775771317
