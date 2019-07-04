@@ -380,15 +380,6 @@ class Scene:
         self._race.update_nets(self._car_nets)
 
     def idle(self):
-        """
-        if self._number_simulations == 1 + self._simulacions:
-            xarxes=[]
-            for i in range(self.__cotxes):
-                xarxes.append(self._race.cars[i].net)
-            #guardar30xarxes(xarxes,self.__ponderacio,self.__de_facil_a_dificil)
-
-            exit(0)
-        """
         time = glutGet(GLUT_ELAPSED_TIME)
 
         if True or self._last_time == 0 or time >= self._last_time + 30:
@@ -527,53 +518,6 @@ def main(num_cars, has_to_save_car, num_max_simulations, ponderation):
 
     glutMainLoop()
 
-
-def eleccio_del_cotxe(ponderacion, de_facil_a_dificil):
-
-    if ponderacion == 1 and de_facil_a_dificil == 0:
-        return int(27)
-    if ponderacion == 2 and de_facil_a_dificil == 0:
-        return int(30)
-    if ponderacion == 3 and de_facil_a_dificil == 0:
-        return int(12)
-    if ponderacion == 4 and de_facil_a_dificil == 0:
-        return int(15)
-    if ponderacion == 5 and de_facil_a_dificil == 0:
-        return int(7)
-    if ponderacion == 1 and de_facil_a_dificil == 1:
-        return int(14)
-    if ponderacion == 2 and de_facil_a_dificil == 1:
-        return int(16)
-    if ponderacion == 3 and de_facil_a_dificil == 1:
-        return int(19)
-    if ponderacion == 4 and de_facil_a_dificil == 1:
-        return int(19)
-    if ponderacion == 5 and de_facil_a_dificil == 1:
-        return int(28)
-
-""" I DON'T NEED IT FOR NOW 
-finestra=Inici()
-finestra.start()
-circuit=finestra.circuit()
-ponderacio=finestra.ponderacion()
-de_facil_a_dificil=finestra.de_facil_a_dificil()
-cotxes=finestra.cotxes()
-simulacions=1
-usuari=finestra.usuari()
-
-"""
-
-"""
-if usuari == 1:  # Human doesn't play
-    if cotxes != 1:
-        network_cars = load30xarxes(ponderacio, de_facil_a_dificil).xarxa()
-    else:
-        network_cars = [load30xarxes(ponderacio, de_facil_a_dificil).xarxa_cotxe_n(eleccio_del_cotxe(ponderacio, de_facil_a_dificil)-1)]
-else:
-    cotxes = 2
-    network_cars.append(load30xarxes(ponderacio, de_facil_a_dificil).xarxa_cotxe_n(eleccio_del_cotxe(ponderacio, de_facil_a_dificil)-1))
-    network_cars.append(load30xarxes(ponderacio, de_facil_a_dificil).xarxa_cotxe_n(eleccio_del_cotxe(ponderacio, de_facil_a_dificil)-1))
-"""
 if __name__ == '__main__':
         has_to_save_car = 0  # si és 1 se guarda en UsuariCircuit el cotxe inicial
         ponderation = 2 # d^2

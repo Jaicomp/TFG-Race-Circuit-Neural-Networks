@@ -75,11 +75,11 @@ class Scene:
         print("SAVE CAR METRIC")
         filepath = '../TestCasesMetricsTrainingIndividualCircuits/circuit_{0}_simulation_{1}.txt'.format(self._circuits[self._index_circuits], self._num_test_cases)
         contentFile = "Circuit: {0}\n" \
-                      " Test case: {1}\n" \
-                      " Num simulations {2}\n" \
-                      " Result test circuit 1: {3}\n" \
-                      " Result test circuit 2: {4}\n" \
-                      " Result test circuit 3: {5}".format(
+                      "Test case: {1}\n" \
+                      "Num simulations {2}\n" \
+                      "Result test circuit 1: {3}\n" \
+                      "Result test circuit 2: {4}\n" \
+                      "Result test circuit 3: {5}".format(
             self._info_test_case[0],
             self._info_test_case[1],
             self._info_test_case[2],
@@ -521,52 +521,6 @@ def main(num_cars, has_to_save_car, ponderation):
     glutMainLoop()
 
 
-def eleccio_del_cotxe(ponderacion, de_facil_a_dificil):
-
-    if ponderacion == 1 and de_facil_a_dificil == 0:
-        return int(27)
-    if ponderacion == 2 and de_facil_a_dificil == 0:
-        return int(30)
-    if ponderacion == 3 and de_facil_a_dificil == 0:
-        return int(12)
-    if ponderacion == 4 and de_facil_a_dificil == 0:
-        return int(15)
-    if ponderacion == 5 and de_facil_a_dificil == 0:
-        return int(7)
-    if ponderacion == 1 and de_facil_a_dificil == 1:
-        return int(14)
-    if ponderacion == 2 and de_facil_a_dificil == 1:
-        return int(16)
-    if ponderacion == 3 and de_facil_a_dificil == 1:
-        return int(19)
-    if ponderacion == 4 and de_facil_a_dificil == 1:
-        return int(19)
-    if ponderacion == 5 and de_facil_a_dificil == 1:
-        return int(28)
-
-""" I DON'T NEED IT FOR NOW 
-finestra=Inici()
-finestra.start()
-circuit=finestra.circuit()
-ponderacio=finestra.ponderacion()
-de_facil_a_dificil=finestra.de_facil_a_dificil()
-cotxes=finestra.cotxes()
-simulacions=1
-usuari=finestra.usuari()
-
-"""
-
-"""
-if usuari == 1:  # Human doesn't play
-    if cotxes != 1:
-        network_cars = load30xarxes(ponderacio, de_facil_a_dificil).xarxa()
-    else:
-        network_cars = [load30xarxes(ponderacio, de_facil_a_dificil).xarxa_cotxe_n(eleccio_del_cotxe(ponderacio, de_facil_a_dificil)-1)]
-else:
-    cotxes = 2
-    network_cars.append(load30xarxes(ponderacio, de_facil_a_dificil).xarxa_cotxe_n(eleccio_del_cotxe(ponderacio, de_facil_a_dificil)-1))
-    network_cars.append(load30xarxes(ponderacio, de_facil_a_dificil).xarxa_cotxe_n(eleccio_del_cotxe(ponderacio, de_facil_a_dificil)-1))
-"""
 if __name__ == '__main__':
         has_to_save_car = 0  # si és 1 se guarda en UsuariCircuit el cotxe inicial
         ponderation = 2 # d^2
