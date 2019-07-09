@@ -263,7 +263,6 @@ class Scene:
 
         # Visualitzar el circuit sense cotxes
         ######################################################################################################################
-
         # glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         # glClearColor(1,1,1,1)
         # px = 45
@@ -524,7 +523,7 @@ if not windows.getCircuits():
 
 if __name__ == '__main__':
         has_to_save_car = 0  # si és 1 se guarda en UsuariCircuit el cotxe inicial
-        ponderation = 2 # d^2
+        ponderation = 1 # d^2
         num_cars = 1
         num_max_simulations = 1
         main(num_cars, windows.getCircuits(), windows.getCircuitsInBinary(), has_to_save_car, num_max_simulations, ponderation)
