@@ -79,7 +79,8 @@ class Segment(object):
 
     def render(self):
         for cr in self._collisionRegions:
-            glColor3f(1, 1, 1)
+            #  glColor3f(1, 1, 1)
+            glColor3f(0, 0, 0)
             glBegin(GL_LINE_LOOP)
             for p in cr.points:
                 p.render()

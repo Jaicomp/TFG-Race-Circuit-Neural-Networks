@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="236069d6-787b-47e1-a431-b16889fc2881" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entities/MainTrainingAllCircuits.py" beforeDir="false" afterPath="$PROJECT_DIR$/entities/MainTrainingAllCircuits.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entities/MainTrainingIndividualCircuits.py" beforeDir="false" afterPath="$PROJECT_DIR$/entities/MainTrainingIndividualCircuits.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entities/SimulateTestCaseTrainingAllCircuits.py" beforeDir="false" afterPath="$PROJECT_DIR$/entities/SimulateTestCaseTrainingAllCircuits.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entities/carsimulator/Segment.py" beforeDir="false" afterPath="$PROJECT_DIR$/entities/carsimulator/Segment.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,8 +18,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/entities/MainTrainingIndividualCircuits.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8874">
-              <caret line="526" column="22" selection-start-line="526" selection-start-column="22" selection-end-line="526" selection-end-column="22" />
+            <state relative-caret-position="248">
+              <caret line="230" column="32" selection-start-line="230" selection-start-column="32" selection-end-line="230" selection-end-column="32" />
+              <folding>
+                <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/entities/MainTrainingAllCircuits.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="248">
+              <caret line="232" column="32" selection-start-line="232" selection-start-column="32" selection-end-line="232" selection-end-column="32" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -25,22 +40,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/entities/MainTrainingAllCircuits.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="649">
-              <caret line="40" column="65" lean-forward="true" selection-start-line="40" selection-start-column="65" selection-end-line="40" selection-end-column="65" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/entities/ScoreTestCasesTrainingAllCircuits.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1071">
-              <caret line="63" selection-start-line="63" selection-end-line="66" selection-end-column="17" />
+            <state relative-caret-position="154">
+              <caret line="33" column="62" selection-start-line="33" selection-start-column="62" selection-end-line="33" selection-end-column="62" />
             </state>
           </provider>
         </entry>
@@ -48,8 +51,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/entities/SimulateTestCaseTrainingAllCircuits.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4386">
-              <caret line="264" column="126" selection-start-line="264" selection-start-column="126" selection-end-line="264" selection-end-column="126" />
+            <state relative-caret-position="339">
+              <caret line="246" column="8" lean-forward="true" selection-start-line="246" selection-start-column="8" selection-end-line="246" selection-end-column="32" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -58,22 +61,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/entities/carsimulator/Race.py">
+        <entry file="file://$PROJECT_DIR$/entities/carsimulator/Track.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="24" column="20" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#45#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="248">
+              <caret line="64" column="18" selection-start-line="64" selection-start-column="18" selection-end-line="64" selection-end-column="18" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/TestCasesMetricsTrainingAllCircuits/testcase127.txt">
+        <entry file="file://$PROJECT_DIR$/entities/carsimulator/Segment.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="244" selection-start-line="2" selection-start-column="235" selection-end-line="2" selection-end-column="244" />
+            <state relative-caret-position="147">
+              <caret line="82" column="30" selection-start-line="82" selection-start-column="30" selection-end-line="82" selection-end-column="30" />
+              <folding>
+                <element signature="e#0#45#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -125,10 +128,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>_cars_circuits_completed</find>
-      <find>_cars_weight_treated</find>
-      <find>_num_max_simulations</find>
-      <find>particleFilter</find>
       <find>_index_circuits</find>
       <find>test_case</find>
       <find>save_best_car_net</find>
@@ -155,6 +154,10 @@
       <find>guardar</find>
       <find>ponder</find>
       <find>ponderacio</find>
+      <find>scipy</find>
+      <find>render2</find>
+      <find>display</find>
+      <find>displau</find>
     </findStrings>
     <dirStrings>
       <dir>C:\Users\Jaime\Desktop\TFG\TFG-GIT\entities\carsimulator</dir>
@@ -175,8 +178,9 @@
         <option value="$PROJECT_DIR$/entities/ScoreTestCases.py" />
         <option value="$PROJECT_DIR$/entities/OpenGLWindow.py" />
         <option value="$PROJECT_DIR$/entities/Inici2.py" />
-        <option value="$PROJECT_DIR$/entities/MainTrainingIndividualCircuits.py" />
+        <option value="$PROJECT_DIR$/entities/carsimulator/Segment.py" />
         <option value="$PROJECT_DIR$/entities/SimulateTestCaseTrainingAllCircuits.py" />
+        <option value="$PROJECT_DIR$/entities/MainTrainingIndividualCircuits.py" />
         <option value="$PROJECT_DIR$/entities/MainTrainingAllCircuits.py" />
       </list>
     </option>
@@ -194,7 +198,28 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="ProjectPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="TFG-GIT" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TFG-GIT" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="TFG-GIT" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TFG-GIT" type="462c0819:PsiDirectoryNode" />
+              <item name="entities" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="TFG-GIT" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TFG-GIT" type="462c0819:PsiDirectoryNode" />
+              <item name="entities" type="462c0819:PsiDirectoryNode" />
+              <item name="carsimulator" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -231,7 +256,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/entities/MainTrainingAllCircuits.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/entities/SimulateTestCaseTrainingAllCircuits.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -286,13 +311,14 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15884861" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.21776505" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.21668473" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.24220963" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -409,22 +435,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/entities/carsimulator/Track.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="26" column="16" selection-start-line="26" selection-start-column="16" selection-end-line="26" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/entities/carsimulator/Segment.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/unittests/geometry/RectangleTest.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -501,33 +511,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/entities/MainTrainingIndividualCircuits.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8874">
-          <caret line="526" column="22" selection-start-line="526" selection-start-column="22" selection-end-line="526" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/entities/ScoreTestCasesTrainingAllCircuits.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1071">
-          <caret line="63" selection-start-line="63" selection-end-line="66" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/entities/SimulateTestCaseTrainingAllCircuits.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4386">
-          <caret line="264" column="126" selection-start-line="264" selection-start-column="126" selection-end-line="264" selection-end-column="126" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/entities/carsimulator/Race.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -573,13 +556,57 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/entities/MainTrainingAllCircuits.py">
+    <entry file="file://$PROJECT_DIR$/entities/carsimulator/Track.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="649">
-          <caret line="40" column="65" lean-forward="true" selection-start-line="40" selection-start-column="65" selection-end-line="40" selection-end-column="65" />
+        <state relative-caret-position="248">
+          <caret line="64" column="18" selection-start-line="64" selection-start-column="18" selection-end-line="64" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entities/carsimulator/Segment.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="82" column="30" selection-start-line="82" selection-start-column="30" selection-end-line="82" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entities/SimulateTestCaseTrainingAllCircuits.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="246" column="8" lean-forward="true" selection-start-line="246" selection-start-column="8" selection-end-line="246" selection-end-column="32" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entities/MainTrainingIndividualCircuits.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="230" column="32" selection-start-line="230" selection-start-column="32" selection-end-line="230" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entities/MainTrainingAllCircuits.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="232" column="32" selection-start-line="232" selection-start-column="32" selection-end-line="232" selection-end-column="32" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/entities/ScoreTestCasesTrainingAllCircuits.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="154">
+          <caret line="33" column="62" selection-start-line="33" selection-start-column="62" selection-end-line="33" selection-end-column="62" />
         </state>
       </provider>
     </entry>
