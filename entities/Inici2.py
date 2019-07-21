@@ -13,7 +13,7 @@ class Inici:
         self._isCircuit4Enable = IntVar()
 
         self._windows.title("Simulador del caso de estudio 1.")
-        self._windows.geometry("530x70")
+        self._windows.geometry("400x70")
         self._windows.resizable(False, False)
 
         Label(self._windows,
@@ -33,16 +33,16 @@ class Inici:
         Checkbutton(self._windows,
                     text="Circuito 3",
                     variable=self._isCircuit3Enable
-                    ).place(x=300, y=20)
+                    ).place(x=0, y=40)
 
         Checkbutton(self._windows,
                     text="Circuito 4",
                     variable=self._isCircuit4Enable
-                    ).place(x=450, y=20)
+                    ).place(x=150, y=40)
 
-        Listbox(self._windows).place(x=0, y=0).insert(END, "Python", "C")
+        Listbox(self._windows)
 
-        Button(self._windows,text="Empezar!", command=self.start).place(x=454,y=40)
+        Button(self._windows,text="Empezar!", command=self.start).place(x=300,y=30)
 
         mainloop()
 
@@ -55,10 +55,7 @@ class Inici:
             self._isCircuit1Enable.get(),
             self._isCircuit2Enable.get(),
             self._isCircuit3Enable.get(),
-            self._isCircuit4Enable.get(),
-            self._isCircuit5Enable.get(),
-            self._isCircuit6Enable.get(),
-            self._isCircuit7Enable.get()
+            self._isCircuit4Enable.get()
         ]
         return circuitsInBinary
 
@@ -69,11 +66,10 @@ class Inici:
         if self._isCircuit2Enable.get(): circuits.append(2)
         if self._isCircuit3Enable.get(): circuits.append(3)
         if self._isCircuit4Enable.get(): circuits.append(4)
-        if self._isCircuit5Enable.get(): circuits.append(5)
-        if self._isCircuit6Enable.get(): circuits.append(6)
-        if self._isCircuit7Enable.get(): circuits.append(7)
+
+        # More than one circuit is checked or none
+        if len(circuits) > 1 or len(circuits) == 0: return None
 
         return circuits
 
-inici = Inici()
-inici.start()
+
