@@ -250,17 +250,17 @@ class Scene:
         # Visualitzar el circuit sense cotxes
         ######################################################################################################################
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-        glClearColor(1,1,1,1)
-        px = 45
-        py = 50
-        glLoadIdentity()
-        gluLookAt(px, py, 270,
-                  px, py, 0,
-                  0, 1, 0)
-        self._race.track.render2()
-        glutSwapBuffers()
-        return
+        # glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        # glClearColor(1,1,1,1)
+        # px = 45
+        # py = 50
+        # glLoadIdentity()
+        # gluLookAt(px, py, 270,
+        #           px, py, 0,
+        #           0, 1, 0)
+        # self._race.track.render2()
+        # glutSwapBuffers()
+        # return
         #####################################################################################################################
 
         glMatrixMode(GL_PROJECTION)
@@ -426,7 +426,7 @@ class Scene:
 
             self._last_time = time
 
-            #  glutPostRedisplay()
+            glutPostRedisplay()
 
     def particleFilter(self, weights, previous_nets):
         nets = []
